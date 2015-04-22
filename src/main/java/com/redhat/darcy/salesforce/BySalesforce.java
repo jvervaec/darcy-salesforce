@@ -59,8 +59,8 @@ public abstract class BySalesforce {
         public BySalesforceLabel(String subHeading, String label) {
             this.subHeading = Objects.requireNonNull(subHeading, "subHeading");
             this.label = Objects.requireNonNull(label, "label");
-
-            String xpath = "//div[@class='pbSubsection']//td[" + withClass("dataCol") + 
+            
+            String xpath = "//div[@class='pbSubsection'" + withSubHeading(subHeading) + "]//td[" + withClass("dataCol") + 
                     " and " + "preceding-sibling::*[1][" + withClass("labelCol") + 
                     "]//text()='" + label + "']";
 
@@ -111,6 +111,14 @@ public abstract class BySalesforce {
 
         private String withClass(String className) {
             return "contains(concat(' ', normalize-space(@class), ' '), ' " + className + " ')";
+        }
+        
+        private String withSubHeading(String subHeading) {
+            if (subHeading.equals("")) {
+                return "";
+            } else {
+                return " and (preceding-sibling::div/h3[text()='" + subHeading +"'] | preceding::div/table/tbody/tr/td/h2[text()='" + subHeading + "'])][1";
+            }
         }
     }
 }       
