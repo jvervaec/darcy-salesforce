@@ -1,8 +1,8 @@
 package com.redhat.darcy.salesforce.testing.services;
 
-import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.LoginResult;
 import com.sforce.soap.metadata.MetadataConnection;
+import com.sforce.soap.partner.LoginResult;
+import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
@@ -24,6 +24,7 @@ public class DarcySalesforceMetadataConnection implements Provider<MetadataConne
             final LoginResult loginResult = loginToSalesforce(USERNAME, PASSWORD, URL);
 
             final ConnectorConfig config = new ConnectorConfig();
+
             config.setServiceEndpoint(loginResult.getMetadataServerUrl());
             config.setSessionId(loginResult.getSessionId());
             this.connection = new MetadataConnection(config);
@@ -42,7 +43,7 @@ public class DarcySalesforceMetadataConnection implements Provider<MetadataConne
         config.setAuthEndpoint(loginUrl);
         config.setServiceEndpoint(loginUrl);
         config.setManualLogin(true);
-        return (new EnterpriseConnection(config)).login(username, password);
+        return (new PartnerConnection(config)).login(username, password);
     }
 
 

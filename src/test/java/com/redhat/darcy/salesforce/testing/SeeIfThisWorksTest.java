@@ -4,7 +4,8 @@ import com.google.acai.Acai;
 import com.redhat.darcy.salesforce.testing.doubles.vfStubs;
 import com.redhat.darcy.salesforce.testing.modules.UnitTestModule;
 import com.redhat.darcy.salesforce.testing.services.api.SalesforceService;
-import com.sforce.soap.enterprise.sobject.ApexPage;
+
+import com.sforce.soap.metadata.ApexPage;
 import com.sforce.soap.metadata.CustomObject;
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import java.nio.charset.Charset;
 
 public class SeeIfThisWorksTest {
 
@@ -38,9 +40,12 @@ public class SeeIfThisWorksTest {
 
         ApexPage page = new ApexPage();
 
-        page.setMarkup("<apex:page><h1>Hello World</h1></apex:page>");
-
-        page.setName("Automation Test Page");
+        String content = "<apex:page><h1>Hello World</h1></apex:page>";
+        page.setContent(content.getBytes(Charset.forName("UTF-8")));
+        page.setFullName("Automation Test page");
+//        page.setMarkup("<apex:page><h1>Hello World</h1></apex:page>");
+//
+//        page.setName("Automation Test Page");
 
         service.createMetadata(page);
 
